@@ -1,10 +1,9 @@
-import { Suspense } from "react"
-import AboutRedesigned from "@/components/about-redesigned"
-import TargetAudience from "@/components/target-audience"
-import WhyMombasa from "@/components/why-mombasa"
-import { ThemeToggleFloat } from "@/components/theme-toggle-float"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import Loading from "@/components/loading"
+import AboutRedesigned from '@/components/about-redesigned';
+import Loading from '@/components/loading';
+import { ScrollToTop } from '@/components/scroll-to-top';
+import TargetAudience from '@/components/target-audience';
+import { ThemeToggleFloat } from '@/components/theme-toggle-float';
+import { Suspense } from 'react';
 
 export default function AboutPage() {
   return (
@@ -12,10 +11,10 @@ export default function AboutPage() {
       <Suspense fallback={<Loading />}>
         <AboutRedesigned />
         <TargetAudience />
-        <WhyMombasa />
+        {/* <WhyMombasa /> */}
         <ThemeToggleFloat />
         <ScrollToTop />
       </Suspense>
     </main>
-  )
+  );
 }
