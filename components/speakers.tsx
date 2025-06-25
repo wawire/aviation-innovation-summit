@@ -260,7 +260,7 @@ const Speakers = () => {
                   <span className="sm:hidden">
                     {category.name.split(' ')[0]}
                   </span>
-                  <Badge variant="secondary" className="ml-1 text-xs">
+                  <Badge variant="default" className="ml-1 text-xs">
                     {category.count}
                   </Badge>
                 </TabsTrigger>
@@ -494,7 +494,7 @@ const Speakers = () => {
                       <h3 className="font-semibold mb-3">Areas of Expertise</h3>
                       <div className="flex flex-wrap gap-2">
                         {selectedSpeaker.expertise.map(skill => (
-                          <Badge key={skill} variant="secondary">
+                          <Badge key={skill} variant="default">
                             {skill}
                           </Badge>
                         ))}

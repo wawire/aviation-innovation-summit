@@ -1,8 +1,8 @@
-import { Suspense } from "react"
-import Speakers from "@/components/speakers"
-import { ThemeToggleFloat } from "@/components/theme-toggle-float"
-import { ScrollToTop } from "@/components/scroll-to-top"
-import Loading from "@/components/loading"
+import Loading from '@/components/loading';
+import { ScrollToTop } from '@/components/scroll-to-top';
+import Speakers from '@/components/speakers';
+import { ThemeToggleFloat } from '@/components/theme-toggle-float';
+import { Suspense } from 'react';
 
 export default function SpeakersPage() {
   return (
@@ -13,5 +13,5 @@ export default function SpeakersPage() {
         <ScrollToTop />
       </Suspense>
     </main>
-  )
+  );
 }
