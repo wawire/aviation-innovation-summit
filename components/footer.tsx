@@ -1,141 +1,132 @@
 'use client';
 
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-  Twitter,
-} from 'lucide-react';
+import { Instagram, Linkedin, Plane, Twitter, Youtube } from 'lucide-react';
 import Link from 'next/link';
+
+const navLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Speakers', href: '/speakers' },
+  { name: 'Sponsors', href: '/sponsors' },
+  { name: 'Agenda', href: '/agenda' },
+];
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-white w-full">
-      <div className="container mx-auto px-4">
-        {/* Footer Content */}
-        <div className="py-10 md:py-12">
-          <div className="flex flex-col items-center text-center">
-            <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
-            <p className="mb-6 text-white/80 max-w-md">
-              Interested in sponsorship opportunities or have questions about
-              the summit? Reach out to our team.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              <div className="flex flex-col items-center">
-                <div className="p-2.5 rounded-full bg-white/10 mb-3">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <h4 className="font-bold">Email Us</h4>
-                <p className="text-white/80">aais@kenya-airways.com</p>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div className="p-2.5 rounded-full bg-white/10 mb-3">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <h4 className="font-bold">Call Us</h4>
-                <p className="text-white/80">+254 700 123 456</p>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div className="p-2.5 rounded-full bg-white/10 mb-3">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <h4 className="font-bold">Location</h4>
-                <p className="text-white/80">Mombasa Kenya</p>
-              </div>
+    <footer className="bg-gray-900 text-gray-300 pt-12 pb-8 px-4 mt-16 border-t border-gray-800">
+      <div className="w-[90%] max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-12 gap-y-10">
+        {/* Brand Section */}
+        <div>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
+              <Plane className="h-6 w-6 text-white" />
             </div>
-
-            <div className="mt-8">
-              <h4 className="font-medium mb-3">Follow Us</h4>
-              <div className="flex space-x-4">
-                <Link
-                  href="https://www.facebook.com/KenyaAirways.OuestAfrica/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <Facebook className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="https://x.com/KenyaAirways?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <Twitter className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="https://www.linkedin.com/company/kenya-airways/?originalSubdomain=ke"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <Linkedin className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="https://www.instagram.com/officialkenyaairways/?hl=en"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <Instagram className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Bottom */}
-        <div className="py-6 border-t border-white/20">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold">AAIS 2025</h3>
-              <p className="text-white/70 text-sm mt-1">
-                Africa Aviation Innovation Summit 2025
+            <div>
+              <span className="text-xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                AAIS 2025
+              </span>
+              <p className="text-xs text-gray-400">
+                Aviation Innovation Summit
               </p>
             </div>
+          </Link>
+          <p className="mt-4 text-sm text-gray-400 leading-relaxed max-w-sm">
+            Driving innovation and collaboration in African aviation. Join us in
+            shaping the future of flight.
+          </p>
 
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="#about"
-                className="text-white/70 hover:text-white transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="#sponsors"
-                className="text-white/70 hover:text-white transition-colors"
-              >
-                Sponsors
-              </Link>
-              <Link
-                href="#agenda"
-                className="text-white/70 hover:text-white transition-colors"
-              >
-                Agenda
-              </Link>
-              <Link
-                href="#venue"
-                className="text-white/70 hover:text-white transition-colors"
-              >
-                Venue
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-6 text-center text-white/70 text-sm">
-            <p>
-              © {new Date().getFullYear()} Africa Aviation Innovation Summit.
-              All rights reserved.
-            </p>
-            <p className="mt-1">Organized by Kenya Airways PLC and AFRAA</p>
+          {/* Social Icons */}
+          <div className="flex gap-5 mt-4">
+            <a
+              href="https://linkedin.com/company/aais2025"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="h-5 w-5 text-gray-400 hover:text-white transition" />
+            </a>
+            <a
+              href="https://twitter.com/aais2025"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+            >
+              <Twitter className="h-5 w-5 text-gray-400 hover:text-white transition" />
+            </a>
+            <a
+              href="https://youtube.com/@aais2025"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+            >
+              <Youtube className="h-5 w-5 text-gray-400 hover:text-white transition" />
+            </a>
+            <a
+              href="https://instagram.com/aais2025"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <Instagram className="h-5 w-5 text-gray-400 hover:text-white transition" />
+            </a>
           </div>
         </div>
+
+        {/* Navigation */}
+        <div>
+          <h4 className="text-white font-semibold mb-4">Navigation</h4>
+          <ul className="space-y-2 text-sm">
+            {navLinks.map(link => (
+              <li key={link.name}>
+                <Link href={link.href} className="hover:text-white transition">
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Contact */}
+        <div>
+          <h4 className="text-white font-semibold mb-4">Contact</h4>
+          <ul className="text-sm space-y-2">
+            <li>
+              Email:{' '}
+              <a href="mailto:info@aais2025.com" className="hover:text-white">
+                info@aais2025.com
+              </a>
+            </li>
+            <li>
+              Phone:{' '}
+              <a href="tel:+254716851914" className="hover:text-white">
+                +254 716 851 914
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Legal */}
+        <div>
+          <h4 className="text-white font-semibold mb-4">Legal</h4>
+          <ul className="text-sm space-y-2">
+            <li>
+              <Link href="/privacy" className="hover:text-white">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="hover:text-white">
+                Terms of Use
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="mt-10 border-t border-gray-700 pt-6 text-sm text-center text-gray-500">
+        &copy; {new Date().getFullYear()} Africa Aviation Innovation Summit. All
+        rights reserved.
       </div>
     </footer>
   );

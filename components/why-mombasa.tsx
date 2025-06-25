@@ -110,7 +110,7 @@ const WhyMombasa = () => {
               <CardContent className="p-0">
                 <div className="relative h-[500px] overflow-hidden">
                   <img
-                    src="/images/mombasa-aerial.jpeg"
+                    src="/images/mombasa-aerial.jpg"
                     alt="Mombasa Aerial View"
                     className="w-full h-full object-cover"
                   />

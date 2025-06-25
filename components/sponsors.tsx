@@ -11,19 +11,110 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Award, Check, Crown, Gem, Star, Zap } from 'lucide-react';
+import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 interface SponsorTier {
   id: string;
   name: string;
   price: number;
+  icon: React.ReactNode;
   description: string;
-  slots: number;
-  slotsRemaining: number;
+  slotsLabel: string;
   features: string[];
   popular?: boolean;
 }
+
+const sponsorTiers: SponsorTier[] = [
+  {
+    id: 'diamond',
+    name: 'Diamond',
+    price: 60000,
+    icon: <Gem className="h-6 w-6" />,
+    description: 'Premier tier with maximum visibility and influence',
+    slotsLabel: '3 slots available',
+    features: [
+      'Naming rights: “AAIS 2025 Powered by [Your Company]”',
+      'Top-tier logo placement on all event materials and communications',
+      'Opening keynote speech opportunity',
+      'Largest, most prominent exhibition space',
+      'VIP Lounge access for exclusive networking',
+      'Special recognition in all media coverage and press releases',
+      'Invitation to exclusive VIP dinner',
+      '12 VIP passes',
+    ],
+  },
+  {
+    id: 'platinum',
+    name: 'Platinum',
+    price: 40000,
+    icon: <Crown className="h-6 w-6" />,
+    description: 'High-level visibility and engagement',
+    slotsLabel: '5 slots available',
+    features: [
+      'Premium logo placement on all event materials',
+      'Keynote or fireside chat speaking opportunity',
+      'Prominent exhibition booth',
+      'VIP Lounge access for private networking',
+      'Dedicated media feature and press release mention',
+      'Invitation to exclusive VIP dinner',
+      '10 VIP passes',
+    ],
+    popular: true,
+  },
+  {
+    id: 'gold',
+    name: 'Gold',
+    price: 30000,
+    icon: <Star className="h-6 w-6" />,
+    description: 'Enhanced visibility with speaking opportunities',
+    slotsLabel: '10 slots available',
+    features: [
+      'Logo on all marketing collateral & digital promotions',
+      'Panel discussion seat',
+      'Premium exhibition booth',
+      'Access to networking sessions & speaker lounge',
+      'Dedicated sponsor highlight across social media',
+      'Invitation to VIP networking cocktail',
+      '6 VIP passes',
+    ],
+  },
+  {
+    id: 'silver',
+    name: 'Silver',
+    price: 20000,
+    icon: <Award className="h-6 w-6" />,
+    description: 'Essential visibility package for businesses',
+    slotsLabel: 'Unlimited slots',
+    features: [
+      'Logo on event website & select signage',
+      'Mention in event brochure',
+      'Basic exhibition space',
+      'General networking access',
+      'Social media mentions',
+      'Invitation to exclusive VIP dinner',
+      '4 VIP passes',
+    ],
+  },
+  {
+    id: 'bronze',
+    name: 'Bronze',
+    price: 10000,
+    icon: <Zap className="h-6 w-6" />,
+    description: 'Entry-level brand presence',
+    slotsLabel: 'Unlimited slots',
+    features: [
+      'Logo on event website & select signage',
+      'Mention in event brochure',
+      'Basic exhibition space',
+      'General networking access',
+      'Social media mentions',
+      'Invitation to exclusive VIP dinner',
+      '2 VIP passes',
+    ],
+  },
+];
 
 const Sponsors = () => {
   const [ref, inView] = useInView({
@@ -31,77 +122,12 @@ const Sponsors = () => {
     threshold: 0.1,
   });
 
-  const sponsorTiers: SponsorTier[] = [
-    {
-      id: 'platinum',
-      name: 'Platinum',
-      price: 60000,
-      description: 'Exclusive top-tier visibility and engagement',
-      slots: 2,
-      slotsRemaining: 1,
-      features: [
-        'Naming rights: "AAIS 2025 Powered by [Your Company]"',
-        'Premium logo placement on all event materials',
-        'Keynote speech opportunity',
-        'Prime exhibition space',
-        'VIP Lounge access for private networking',
-        'Invitation to exclusive VIP dinner',
-        '10 VIP passes',
-      ],
-    },
-    {
-      id: 'gold',
-      name: 'Gold',
-      price: 50000,
-      description: 'Premium visibility with speaking opportunities',
-      slots: 3,
-      slotsRemaining: 2,
-      features: [
-        'Logo on all marketing collateral & digital promotions',
-        'Panel discussion seat',
-        'Premium exhibition booth',
-        'Access to networking sessions & speaker lounge',
-        'Dedicated sponsor highlight across social media',
-        'Invitation to VIP networking cocktail',
-        '6 VIP passes',
-      ],
-      popular: true,
-    },
-    {
-      id: 'silver',
-      name: 'Silver',
-      price: 30000,
-      description: 'Enhanced visibility with networking opportunities',
-      slots: 4,
-      slotsRemaining: 3,
-      features: [
-        'Logo placement on selected event branding',
-        'Participation in a panel discussion',
-        'Standard exhibition booth',
-        'Access to curated networking events',
-        'Logo placement in event recap materials',
-        'Invitation to exclusive VIP dinner',
-        '4 VIP passes',
-      ],
-    },
-    {
-      id: 'bronze',
-      name: 'Bronze',
-      price: 20000,
-      description: 'Essential visibility package for businesses',
-      slots: 6,
-      slotsRemaining: 5,
-      features: [
-        'Logo on event website & select signage',
-        'Mention in event brochure',
-        'Basic exhibition space',
-        'General networking access',
-        'Social media mentions',
-        'Invitation to exclusive VIP dinner',
-        '2 VIP passes',
-      ],
-    },
-  ];
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+
+  const handleSelectTier = (tierId: string) => {
+    setSelectedTier(tierId);
+    window.location.href = `/register?type=sponsor&tier=${tierId}`;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -124,82 +150,52 @@ const Sponsors = () => {
       variants={containerVariants}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
     >
-      {sponsorTiers.map((tier) => (
+      {sponsorTiers.map(tier => (
         <motion.div key={tier.id} variants={itemVariants}>
-          <Card
-            className={`h-full border ${
-              tier.popular
-                ? 'border-primary border-2'
-                : 'border-gray-200 dark:border-gray-800'
-            } relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group`}
-            style={{ position: 'relative' }}
-          >
+          <Card className="flex flex-col justify-between h-full border transition-shadow hover:shadow-lg">
             {tier.popular && (
-              <div
-                className="absolute inset-x-0 top-0"
-                style={{ width: '100%' }}
-              >
-                <div className="bg-primary text-white text-xs font-medium py-1.5 text-center w-full">
+              <div className="absolute top-0 right-0">
+                <div className="bg-primary text-white text-xs font-bold px-3 py-1 transform rotate-45 translate-x-6 translate-y-3">
                   MOST POPULAR
                 </div>
               </div>
             )}
-            <CardHeader className={`pb-4 ${tier.popular ? 'pt-10' : 'pt-6'}`}>
-              <div className="flex justify-between items-center mb-1">
-                <CardTitle className="text-2xl font-bold">
-                  {tier.name}
-                </CardTitle>
-                <Badge variant="outline" className="text-xs">
-                  {tier.slotsRemaining} slots available
-                </Badge>
+
+            <CardHeader>
+              <div className="flex justify-between items-center mb-2">
+                <div className="p-2 bg-muted rounded-full">{tier.icon}</div>
+                <Badge variant="outline">{tier.slotsLabel}</Badge>
               </div>
-              <div className="flex items-baseline mt-2">
-                <span className="text-3xl font-bold">
-                  ${tier.price.toLocaleString()}
-                </span>
+              <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
+              <div className="text-2xl font-semibold mt-2">
+                ${tier.price.toLocaleString()}
               </div>
-              <CardDescription className="mt-2">
+              <CardDescription className="mt-1 text-muted-foreground">
                 {tier.description}
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-0">
-              <div className="h-px w-full bg-gray-200 dark:bg-gray-800 my-2"></div>
+
+            <CardContent className="flex-grow">
+              <hr className="my-4 border-gray-300" />
               <ul className="space-y-3 mt-4">
                 {tier.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm">
-                    <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                    <span>{feature}</span>
+                  <li key={index} className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-primary mt-1" />
+                    <span className="text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
             </CardContent>
-            <CardFooter>
+
+            <CardFooter className="pt-4 mt-auto">
               <Button
-                className={`w-full ${
-                  tier.id === 'platinum'
-                    ? 'bg-black hover:bg-black/90 text-white'
-                    : tier.id === 'gold'
-                    ? 'bg-primary hover:bg-primary/90'
-                    : tier.id === 'silver'
-                    ? 'border-primary text-primary hover:bg-primary/10'
-                    : 'border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800'
-                }`}
-                variant={
-                  tier.id === 'platinum' || tier.id === 'gold'
-                    ? 'default'
-                    : 'outline'
-                }
-                asChild
+                className="w-full"
+                variant={tier.popular ? 'default' : 'outline'}
+                onClick={() => handleSelectTier(tier.id)}
               >
-                <a
-                  href="https://rb.gy/lxopum"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Select Package
-                </a>
+                Select Package
               </Button>
             </CardFooter>
           </Card>

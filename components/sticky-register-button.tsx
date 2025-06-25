@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
 
 export function StickyRegisterButton() {
   const [isVisible, setIsVisible] = useState(false)
@@ -31,9 +32,11 @@ export function StickyRegisterButton() {
           transition={{ duration: 0.3 }}
           className="fixed bottom-6 right-1/2 transform translate-x-1/2 z-50"
         >
-          <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-lg px-6 rounded-full">
-            Register Now
-          </Button>
+          <Link href="/register">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-white shadow-lg px-6 rounded-full">
+              Register Now
+            </Button>
+          </Link>
         </motion.div>
       )}
     </AnimatePresence>

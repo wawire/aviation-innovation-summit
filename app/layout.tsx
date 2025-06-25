@@ -1,11 +1,37 @@
+import Breadcrumb from '@/components/breadcrumb';
+import Footer from '@/components/footer';
 import Navbar from '@/components/navbar';
 import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import type React from 'react';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+// Configure Interstate font for body text
+const interstate = localFont({
+  src: [
+    {
+      path: '../public/fonts/Interstate.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-interstate',
+  display: 'swap',
+});
+
+// Configure Lucida font for headers
+const lucida = localFont({
+  src: [
+    {
+      path: '../public/fonts/Lucida.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-lucida',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Africa Aviation Innovation Summit 2025',
@@ -20,7 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${interstate.variable} ${lucida.variable} font-body`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -28,7 +54,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
+          <Breadcrumb />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
