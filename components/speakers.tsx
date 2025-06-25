@@ -12,7 +12,6 @@ import {
   Calendar,
   Globe,
   Linkedin,
-  MapPin,
   Plane,
   Twitter,
   Users,
@@ -275,7 +274,7 @@ const Speakers = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-auto"
         >
           {filteredSpeakers.map((speaker, index) => (
             <motion.div
@@ -320,7 +319,7 @@ const Speakers = () => {
                     </div>
 
                     {/* Country Badge */}
-                    <div className="absolute top-4 right-4">
+                    {/* <div className="absolute top-4 right-4">
                       <Badge
                         variant="outline"
                         className="bg-white/90 backdrop-blur-sm"
@@ -328,7 +327,7 @@ const Speakers = () => {
                         <MapPin className="h-3 w-3 mr-1" />
                         {speaker.country}
                       </Badge>
-                    </div>
+                    </div> */}
 
                     {/* Social Links Overlay */}
                     {/* <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
