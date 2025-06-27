@@ -1,6 +1,6 @@
 'use client';
 
-import { Instagram, Linkedin, Plane, Twitter, Youtube } from 'lucide-react';
+import { Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 import Link from 'next/link';
 
 const navLinks = [
@@ -17,19 +17,14 @@ const Footer = () => {
       <div className="w-[90%] max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-12 gap-y-10">
         {/* Brand Section */}
         <div>
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center group-hover:shadow-lg transition-shadow">
-              <Plane className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <span className="text-xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                AAIS 2025
-              </span>
-              <p className="text-xs text-gray-400">
-                Aviation Innovation Summit
-              </p>
-            </div>
+          <Link href="/" className="flex items-center gap-3 h-14">
+            <img
+              src="/images/aais2025-logo-primary.svg"
+              alt="AAIS 2025 Logo"
+              className="h-16 w-auto object-contain"
+            />
           </Link>
+
           <p className="mt-4 text-sm text-gray-400 leading-relaxed max-w-sm">
             Driving innovation and collaboration in African aviation. Join us in
             shaping the future of flight.
