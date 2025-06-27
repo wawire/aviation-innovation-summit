@@ -1,24 +1,35 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Check, Plane, TrendingUp, Users, Target, Globe, Building, Lightbulb, Shield } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { motion } from 'framer-motion';
+import {
+  Building,
+  Check,
+  Globe,
+  Lightbulb,
+  Plane,
+  Shield,
+  Target,
+  TrendingUp,
+  Users,
+} from 'lucide-react';
 
 const AboutRedesigned = () => {
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-  }
+  };
 
   const industries = [
     {
-      name: "Aviation",
+      name: 'Aviation',
       icon: <Plane className="h-6 w-6 lg:h-8 lg:w-8 text-primary" />,
-      description: "Airlines, airports, air traffic management, and aviation authorities",
-      image: "/images/industry-aviation.jpg",
+      description:
+        'Airlines, airports, air traffic management, and aviation authorities',
+      image: '/images/industry-aviation.jpg',
     },
     {
-      name: "Finance",
+      name: 'Finance',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -36,11 +47,12 @@ const AboutRedesigned = () => {
           <circle cx="12" cy="6" r="4"></circle>
         </svg>
       ),
-      description: "Investors, financiers, venture capitalists, and financial institutions",
-      image: "/images/industry-finance.jpg",
+      description:
+        'Investors, financiers, venture capitalists, and financial institutions',
+      image: '/images/industry-finance.jpg',
     },
     {
-      name: "Tourism",
+      name: 'Tourism',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -62,11 +74,11 @@ const AboutRedesigned = () => {
           <path d="M12 4v16"></path>
         </svg>
       ),
-      description: "Tourism boards, hospitality leaders, and travel agencies",
-      image: "/images/industry-tourism.jpg",
+      description: 'Tourism boards, hospitality leaders, and travel agencies',
+      image: '/images/industry-tourism.jpg',
     },
     {
-      name: "Technology",
+      name: 'Technology',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -86,11 +98,12 @@ const AboutRedesigned = () => {
           <path d="M7 17h10"></path>
         </svg>
       ),
-      description: "Tech providers, startups, AI specialists, and blockchain experts",
-      image: "/images/industry-technology.jpg",
+      description:
+        'Tech providers, startups, AI specialists, and blockchain experts',
+      image: '/images/industry-technology.jpg',
     },
     {
-      name: "Logistics",
+      name: 'Logistics',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -110,119 +123,140 @@ const AboutRedesigned = () => {
           <path d="M4 17h16"></path>
         </svg>
       ),
-      description: "Supply chain professionals, cargo operators, and freight forwarders",
-      image: "/images/industry-logistics.jpg",
+      description:
+        'Supply chain professionals, cargo operators, and freight forwarders',
+      image: '/images/industry-logistics.jpg',
     },
     {
-      name: "Government",
+      name: 'Government',
       icon: <Building className="h-6 w-6 lg:h-8 lg:w-8 text-primary" />,
-      description: "Policymakers, regulators, and government representatives",
-      image: "/images/industry-government.jpg",
+      description: 'Policymakers, regulators, and government representatives',
+      image: '/images/industry-government.jpg',
     },
-  ]
+  ];
 
   const keyThemes = [
     {
-      title: "Infrastructure Development",
+      title: 'Infrastructure Development',
       description:
-        "Strengthening airports, air traffic management, and regional connectivity through cutting-edge solutions.",
+        'Strengthening airports, air traffic management, and regional connectivity through cutting-edge solutions.',
       icon: <Building className="h-8 w-8 lg:h-10 lg:w-10 text-primary" />,
-      image: "/images/theme-infrastructure.jpg",
+      image: '/images/theme-infrastructure.jpg',
     },
     {
-      title: "Efficiency & Sustainability",
+      title: 'Efficiency & Sustainability',
       description:
-        "Exploring funding models and innovative approaches for long-term sustainability in African aviation.",
+        'Exploring funding models and innovative approaches for long-term sustainability in African aviation.',
       icon: <TrendingUp className="h-8 w-8 lg:h-10 lg:w-10 text-primary" />,
-      image: "/images/theme-sustainability.jpg",
+      image: '/images/theme-sustainability.jpg',
     },
     {
-      title: "Regional Partnerships",
-      description: "Identifying synergies among African airlines, governments, and investors for collaborative growth.",
+      title: 'Regional Partnerships',
+      description:
+        'Identifying synergies among African airlines, governments, and investors for collaborative growth.',
       icon: <Users className="h-8 w-8 lg:h-10 lg:w-10 text-primary" />,
-      image: "/images/theme-partnerships.jpg",
+      image: '/images/theme-partnerships.jpg',
     },
     {
-      title: "Pan-African Connectivity",
-      description: "Enhancing regional aviation ties to improve air transport across the continent.",
+      title: 'Pan-African Connectivity',
+      description:
+        'Enhancing regional aviation ties to improve air transport across the continent.',
       icon: <Globe className="h-8 w-8 lg:h-10 lg:w-10 text-primary" />,
-      image: "/images/theme-connectivity.jpg",
+      image: '/images/theme-connectivity.jpg',
     },
     {
-      title: "Technological Advancements",
-      description: "Utilizing AI and automation to improve operational efficiency, safety, and customer experience.",
+      title: 'Technological Advancements',
+      description:
+        'Utilizing AI and automation to improve operational efficiency, safety, and customer experience.',
       icon: <Lightbulb className="h-8 w-8 lg:h-10 lg:w-10 text-primary" />,
-      image: "/images/theme-technology.jpg",
+      image: '/images/theme-technology.jpg',
     },
     {
-      title: "Blockchain Security",
-      description: "Employing blockchain technology to increase transparency and security in aviation operations.",
+      title: 'Blockchain Security',
+      description:
+        'Employing blockchain technology to increase transparency and security in aviation operations.',
       icon: <Shield className="h-8 w-8 lg:h-10 lg:w-10 text-primary" />,
-      image: "/images/theme-blockchain.jpg",
+      image: '/images/theme-blockchain.jpg',
     },
-  ]
+  ];
 
   const objectives = [
     {
-      title: "Explore Cross-Industry Collaboration",
+      title: 'Explore Cross-Industry Collaboration',
       description:
-        "Involve investors, policymakers, and industry leaders to drive investment in aviation infrastructure",
+        'Involve investors, policymakers, and industry leaders to drive investment in aviation infrastructure',
       icon: <Target className="h-5 w-5 text-primary" />,
-      image: "/images/objective-collaboration.jpg",
+      image: '/images/objective-collaboration.jpg',
     },
     {
       title: "Highlight Innovation's Role",
-      description: "Demonstrate how innovation enhances efficiency, customer experience, and operational excellence",
+      description:
+        'Demonstrate how innovation enhances efficiency, customer experience, and operational excellence',
       icon: <Target className="h-5 w-5 text-primary" />,
-      image: "/images/objective-innovation.jpg",
+      image: '/images/objective-innovation.jpg',
     },
     {
-      title: "Showcase Funding Models",
-      description: "Present innovative financing models and business strategies that bolster industry resilience",
+      title: 'Showcase Funding Models',
+      description:
+        'Present innovative financing models and business strategies that bolster industry resilience',
       icon: <Target className="h-5 w-5 text-primary" />,
-      image: "/images/objective-funding.jpg",
+      image: '/images/objective-funding.jpg',
     },
     {
-      title: "Foster Regulatory Dialogue",
-      description: "Encourage discussions on regulatory frameworks that create an enabling environment for investments",
+      title: 'Foster Regulatory Dialogue',
+      description:
+        'Encourage discussions on regulatory frameworks that create an enabling environment for investments',
       icon: <Target className="h-5 w-5 text-primary" />,
-      image: "/images/objective-regulatory.jpg",
+      image: '/images/objective-regulatory.jpg',
     },
-  ]
+  ];
 
   const outcomes = [
-    "Strengthened Cross-Sector Partnerships",
-    "Defined Investment Roadmaps",
-    "Policy Recommendations",
-    "Innovative Financing Models",
-    "Commitments to Sustainable Practices",
-  ]
+    'Strengthened Cross-Sector Partnerships',
+    'Defined Investment Roadmaps',
+    'Policy Recommendations',
+    'Innovative Financing Models',
+    'Commitments to Sustainable Practices',
+  ];
 
   return (
     <section id="about" className="section-padding bg-white dark:bg-gray-950">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-12 lg:mb-16">
-          <span className="text-primary font-semibold mb-2 block text-sm lg:text-base">About The Summit</span>
+          <span className="text-primary font-semibold mb-2 block text-sm lg:text-base">
+            About The Summit
+          </span>
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 lg:mb-6">
             Shaping Africa's Aviation Future Through Innovation
           </h2>
           <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-            Africa's aviation industry is at a critical turning point, where strategic investments and innovation can
-            drive transformative growth. The Africa Aviation Innovation Summit 2025 brings together aviation leaders,
-            policymakers, investors, and professionals to explore how innovative investments can fuel the next phase of
+            Africa's aviation industry is at a critical turning point, where
+            strategic investments and innovation can drive transformative
+            growth. The Africa Aviation Innovation Summit 2025 brings together
+            aviation leaders, policymakers, investors, and professionals to
+            explore how innovative investments can fuel the next phase of
             Africa's aviation expansion.
           </p>
         </div>
 
         <Tabs defaultValue="overview" className="mb-12 lg:mb-16">
           <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 mb-6 lg:mb-8 h-12 lg:h-14">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm lg:text-base">
+            <TabsTrigger
+              value="overview"
+              className="text-xs sm:text-sm lg:text-base"
+            >
               Overview
             </TabsTrigger>
-            <TabsTrigger value="objectives" className="text-xs sm:text-sm lg:text-base">
+            <TabsTrigger
+              value="objectives"
+              className="text-xs sm:text-sm lg:text-base"
+            >
               Objectives
             </TabsTrigger>
-            <TabsTrigger value="outcomes" className="text-xs sm:text-sm lg:text-base">
+            <TabsTrigger
+              value="outcomes"
+              className="text-xs sm:text-sm lg:text-base"
+            >
               Expected Outcomes
             </TabsTrigger>
           </TabsList>
@@ -238,8 +272,12 @@ const AboutRedesigned = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
                   <div className="p-6 lg:p-8 text-white">
-                    <h3 className="text-xl lg:text-2xl font-bold mb-2">Transforming African Aviation</h3>
-                    <p className="text-sm lg:text-base opacity-90">Where innovation meets investment opportunities</p>
+                    <h3 className="text-xl lg:text-2xl font-bold mb-2">
+                      Transforming African Aviation
+                    </h3>
+                    <p className="text-sm lg:text-base opacity-90">
+                      Where innovation meets investment opportunities
+                    </p>
                   </div>
                 </div>
               </div>
@@ -259,7 +297,9 @@ const AboutRedesigned = () => {
                     <Check className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg lg:text-xl">High-Impact Networking</h4>
+                    <h4 className="font-bold text-lg lg:text-xl">
+                      High-Impact Networking
+                    </h4>
                   </div>
                 </div>
                 <p className="text-muted-foreground pl-11 text-sm lg:text-base">
@@ -280,10 +320,14 @@ const AboutRedesigned = () => {
                     <Check className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg lg:text-xl">Investment Opportunities</h4>
+                    <h4 className="font-bold text-lg lg:text-xl">
+                      Investment Opportunities
+                    </h4>
                   </div>
                 </div>
-                <p className="text-muted-foreground pl-11 text-sm lg:text-base">Access to potential deal flow</p>
+                <p className="text-muted-foreground pl-11 text-sm lg:text-base">
+                  Access to potential deal flow
+                </p>
               </motion.div>
 
               <motion.div
@@ -299,7 +343,9 @@ const AboutRedesigned = () => {
                     <Check className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg lg:text-xl">Industry Insights</h4>
+                    <h4 className="font-bold text-lg lg:text-xl">
+                      Industry Insights
+                    </h4>
                   </div>
                 </div>
                 <p className="text-muted-foreground pl-11 text-sm lg:text-base">
@@ -309,7 +355,9 @@ const AboutRedesigned = () => {
             </div>
 
             <div className="mb-12 lg:mb-16">
-              <h3 className="text-xl lg:text-2xl font-bold text-center mb-6 lg:mb-8">Cross-Industry Collaboration</h3>
+              <h3 className="text-xl lg:text-2xl font-bold text-center mb-6 lg:mb-8">
+                Cross-Industry Collaboration
+              </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
                 {industries.map((industry, index) => (
                   <motion.div
@@ -322,7 +370,7 @@ const AboutRedesigned = () => {
                   >
                     <div className="aspect-square relative">
                       <img
-                        src={industry.image || "/placeholder.svg"}
+                        src={industry.image || '/placeholder.svg'}
                         alt={industry.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -331,11 +379,15 @@ const AboutRedesigned = () => {
                         <div className="p-2 lg:p-3 rounded-full bg-white/20 backdrop-blur-sm mb-2 lg:mb-3">
                           {industry.icon}
                         </div>
-                        <h4 className="font-bold text-sm lg:text-base text-center">{industry.name}</h4>
+                        <h4 className="font-bold text-sm lg:text-base text-center">
+                          {industry.name}
+                        </h4>
                       </div>
                     </div>
                     <div className="p-3 lg:p-4">
-                      <p className="text-xs lg:text-sm text-muted-foreground text-center">{industry.description}</p>
+                      <p className="text-xs lg:text-sm text-muted-foreground text-center">
+                        {industry.description}
+                      </p>
                     </div>
                   </motion.div>
                 ))}
@@ -355,18 +407,24 @@ const AboutRedesigned = () => {
                 >
                   <div className="aspect-video relative">
                     <img
-                      src={theme.image || "/placeholder.svg"}
+                      src={theme.image || '/placeholder.svg'}
                       alt={theme.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div className="absolute top-4 left-4">
-                      <div className="p-2 lg:p-3 rounded-full bg-white/20 backdrop-blur-sm">{theme.icon}</div>
+                      <div className="p-2 lg:p-3 rounded-full bg-white/20 backdrop-blur-sm">
+                        {theme.icon}
+                      </div>
                     </div>
                   </div>
                   <div className="p-4 lg:p-6">
-                    <h3 className="text-lg lg:text-xl font-bold mb-2 lg:mb-3">{theme.title}</h3>
-                    <p className="text-sm lg:text-base text-muted-foreground">{theme.description}</p>
+                    <h3 className="text-lg lg:text-xl font-bold mb-2 lg:mb-3">
+                      {theme.title}
+                    </h3>
+                    <p className="text-sm lg:text-base text-muted-foreground">
+                      {theme.description}
+                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -387,25 +445,33 @@ const AboutRedesigned = () => {
                   >
                     <div className="aspect-video relative">
                       <img
-                        src={objective.image || "/placeholder.svg"}
+                        src={objective.image || '/placeholder.svg'}
                         alt={objective.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                       <div className="absolute top-4 left-4">
-                        <div className="p-2 lg:p-3 rounded-full bg-primary/20 backdrop-blur-sm">{objective.icon}</div>
+                        <div className="p-2 lg:p-3 rounded-full bg-primary/20 backdrop-blur-sm">
+                          {objective.icon}
+                        </div>
                       </div>
                     </div>
                     <div className="p-4 lg:p-6">
-                      <h3 className="text-lg lg:text-xl font-bold mb-2 lg:mb-3">{objective.title}</h3>
-                      <p className="text-sm lg:text-base text-muted-foreground">{objective.description}</p>
+                      <h3 className="text-lg lg:text-xl font-bold mb-2 lg:mb-3">
+                        {objective.title}
+                      </h3>
+                      <p className="text-sm lg:text-base text-muted-foreground">
+                        {objective.description}
+                      </p>
                     </div>
                   </motion.div>
                 ))}
               </div>
 
               <div className="mt-12 lg:mt-16 p-6 lg:p-8 bg-primary/5 rounded-xl border border-primary/20">
-                <h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-center">Event Format</h3>
+                <h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-center">
+                  Event Format
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                   <div className="flex items-start gap-3">
                     <div className="p-2 rounded-full bg-primary/20 mt-1">
@@ -428,9 +494,12 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">CEO's Breakfast</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        CEO's Breakfast
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        An exclusive gathering of top executives to discuss industry trends and opportunities
+                        An exclusive gathering of top executives to discuss
+                        industry trends and opportunities
                       </p>
                     </div>
                   </div>
@@ -454,9 +523,12 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Keynote Addresses</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Keynote Addresses
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        Expert insights from industry leaders, policymakers, and investors
+                        Expert insights from industry leaders, policymakers, and
+                        investors
                       </p>
                     </div>
                   </div>
@@ -479,9 +551,12 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Panel Discussions</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Panel Discussions
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        Engaging dialogues featuring aviation, finance, tourism, logistics, and technology experts
+                        Engaging dialogues featuring aviation, finance, tourism,
+                        logistics, and technology experts
                       </p>
                     </div>
                   </div>
@@ -505,9 +580,12 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Case Studies & Success Stories</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Case Studies & Success Stories
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        Showcasing innovative aviation investment strategies and business models
+                        Showcasing innovative aviation investment strategies and
+                        business models
                       </p>
                     </div>
                   </div>
@@ -534,9 +612,12 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Innovation & Investment Showcases</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Innovation & Investment Showcases
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        A platform for startups, investors, and technology providers to present cutting-edge solutions
+                        A platform for startups, investors, and technology
+                        providers to present cutting-edge solutions
                       </p>
                     </div>
                   </div>
@@ -560,7 +641,9 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Workshops & Interactive Sessions</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Workshops & Interactive Sessions
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
                         Designed for knowledge sharing and capacity building
                       </p>
@@ -598,17 +681,21 @@ const AboutRedesigned = () => {
                 transition={{ duration: 0.5 }}
                 className="bg-primary/5 rounded-xl p-6 lg:p-8 border border-primary/20"
               >
-                <h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-center">Why Mombasa?</h3>
+                <h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-center">
+                  Why Mombasa?
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                   <div className="flex items-start gap-3">
                     <div className="p-2 rounded-full bg-primary/20 mt-1">
                       <Plane className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">KQ's Coastal Hub</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        KQ's Coastal Hub
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        Mombasa serves as a secondary hub for Kenya Airways, complementing its primary operations at
-                        JKIA in Nairobi
+                        Mombasa serves as a secondary hub for Kenya Airways,
+                        complementing its primary operations at JKIA in Nairobi
                       </p>
                     </div>
                   </div>
@@ -618,10 +705,12 @@ const AboutRedesigned = () => {
                       <Globe className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Strategic Coastal Hub</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Strategic Coastal Hub
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        Serving as a major economic and logistics gateway for East Africa, integrating air, sea, and
-                        land transport
+                        Serving as a major economic and logistics gateway for
+                        East Africa, integrating air, sea, and land transport
                       </p>
                     </div>
                   </div>
@@ -648,10 +737,12 @@ const AboutRedesigned = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Tourism and Trade Potential</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Tourism and Trade Potential
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        As a premier travel destination, Mombasa underscores aviation's vital role in Africa's tourism
-                        industry
+                        As a premier travel destination, Mombasa underscores
+                        aviation's vital role in Africa's tourism industry
                       </p>
                     </div>
                   </div>
@@ -661,10 +752,13 @@ const AboutRedesigned = () => {
                       <Building className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm lg:text-base">Business-Friendly Environment</h4>
+                      <h4 className="font-bold text-sm lg:text-base">
+                        Business-Friendly Environment
+                      </h4>
                       <p className="text-xs lg:text-sm text-muted-foreground">
-                        Kenya offers robust policy support for aviation and economic growth, making it an attractive
-                        investment destination
+                        Kenya offers robust policy support for aviation and
+                        economic growth, making it an attractive investment
+                        destination
                       </p>
                     </div>
                   </div>
@@ -675,7 +769,7 @@ const AboutRedesigned = () => {
         </Tabs>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default AboutRedesigned
+export default AboutRedesigned;

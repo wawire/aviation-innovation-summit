@@ -11,7 +11,6 @@ export default function AboutPage() {
       <Suspense fallback={<Loading />}>
         <AboutRedesigned />
         <TargetAudience />
-        {/* <WhyMombasa /> */}
         <ThemeToggleFloat />
         <ScrollToTop />
       </Suspense>
