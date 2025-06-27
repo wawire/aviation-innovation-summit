@@ -2,8 +2,9 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/sponsors/page": "app/sponsors/page.js",
   "/speakers/page": "app/speakers/page.js",
-  "/about/page": "app/about/page.js",
+  "/venue/page": "app/venue/page.js",
   "/page": "app/page.js",
   "/agenda/page": "app/agenda/page.js",
-  "/venue/page": "app/venue/page.js"
+  "/about/page": "app/about/page.js",
+  "/register/page": "app/register/page.js"
 }
