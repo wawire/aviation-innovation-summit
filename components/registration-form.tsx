@@ -26,17 +26,29 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { motion } from 'framer-motion';
 import {
+  AlertCircle,
   Building,
   Calendar,
   Check,
   CreditCard,
+  Plus,
+  Trash2,
   User,
   Users,
 } from 'lucide-react';
 import { useState } from 'react';
 
+interface Attendee {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  jobTitle: string;
+  dietaryRequirements: string[];
+}
+
 interface RegistrationData {
-  // Personal Information
+  // Personal Information (Primary Contact for Corporate)
   firstName: string;
   lastName: string;
   email: string;
@@ -49,13 +61,17 @@ interface RegistrationData {
   // Registration Type
   registrationType: string;
 
+  // Corporate Package Attendees
+  corporateAttendees: Attendee[];
+  additionalPackages: { type: string; count: number }[];
+
   // Accommodation
   needsAccommodation: boolean;
   accommodationType: string;
   checkIn: string;
   checkOut: string;
 
-  // Dietary Requirements
+  // Dietary Requirements (for individual bookings)
   dietaryRequirements: string[];
   specialRequests: string;
 
@@ -82,6 +98,8 @@ const RegistrationForm = () => {
     industry: '',
     country: '',
     registrationType: '',
+    corporateAttendees: [],
+    additionalPackages: [],
     needsAccommodation: false,
     accommodationType: '',
     checkIn: '',
@@ -106,7 +124,7 @@ const RegistrationForm = () => {
       branchCode: '16000',
       currency: 'USD',
       instructions:
-        "Please use your full name and 'AAIS2025' as reference when making the international transfer",
+        "Please use your company name and 'AAIS2025' as reference when making the international transfer",
     },
     local: {
       bankName: 'NCBA Bank',
@@ -151,6 +169,29 @@ const RegistrationForm = () => {
         'Lunch & refreshments',
         'Gala Dinner',
       ],
+    },
+    {
+      id: 'corporate',
+      name: 'Corporate Package',
+      price: 1200,
+      originalPrice: 1500,
+      description:
+        'Team package for up to 5 delegates from the same organization',
+      features: [
+        'Up to 5 delegates included',
+        'All keynote sessions',
+        'Panel discussions',
+        'Priority networking events',
+        'Premium conference materials',
+        'Lunch & refreshments',
+        'VIP Gala Dinner seating',
+        'Corporate branding opportunities',
+        'Dedicated account manager',
+      ],
+      maxAttendees: 5,
+      minAttendees: 2,
+      note: 'Additional attendees beyond 5 require separate individual packages',
+      corporate: true,
     },
     {
       id: 'student',
@@ -257,6 +298,96 @@ const RegistrationForm = () => {
     }));
   };
 
+  // Corporate attendee management
+  const addCorporateAttendee = () => {
+    if (formData.corporateAttendees.length < 5) {
+      const newAttendee: Attendee = {
+        id: Date.now().toString(),
+        firstName: '',
+        lastName: '',
+        email: '',
+        jobTitle: '',
+        dietaryRequirements: [],
+      };
+      setFormData(prev => ({
+        ...prev,
+        corporateAttendees: [...prev.corporateAttendees, newAttendee],
+      }));
+    }
+  };
+
+  const removeCorporateAttendee = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      corporateAttendees: prev.corporateAttendees.filter(
+        attendee => attendee.id !== id
+      ),
+    }));
+  };
+
+  const updateCorporateAttendee = (
+    id: string,
+    field: keyof Attendee,
+    value: any
+  ) => {
+    setFormData(prev => ({
+      ...prev,
+      corporateAttendees: prev.corporateAttendees.map(attendee =>
+        attendee.id === id ? { ...attendee, [field]: value } : attendee
+      ),
+    }));
+  };
+
+  const updateAttendeeDietary = (
+    id: string,
+    dietary: string,
+    checked: boolean
+  ) => {
+    setFormData(prev => ({
+      ...prev,
+      corporateAttendees: prev.corporateAttendees.map(attendee =>
+        attendee.id === id
+          ? {
+              ...attendee,
+              dietaryRequirements: checked
+                ? [...attendee.dietaryRequirements, dietary]
+                : attendee.dietaryRequirements.filter(item => item !== dietary),
+            }
+          : attendee
+      ),
+    }));
+  };
+
+  const addAdditionalPackage = (type: string) => {
+    setFormData(prev => {
+      const existing = prev.additionalPackages.find(pkg => pkg.type === type);
+      if (existing) {
+        return {
+          ...prev,
+          additionalPackages: prev.additionalPackages.map(pkg =>
+            pkg.type === type ? { ...pkg, count: pkg.count + 1 } : pkg
+          ),
+        };
+      } else {
+        return {
+          ...prev,
+          additionalPackages: [...prev.additionalPackages, { type, count: 1 }],
+        };
+      }
+    });
+  };
+
+  const removeAdditionalPackage = (type: string) => {
+    setFormData(prev => ({
+      ...prev,
+      additionalPackages: prev.additionalPackages
+        .map(pkg =>
+          pkg.type === type ? { ...pkg, count: pkg.count - 1 } : pkg
+        )
+        .filter(pkg => pkg.count > 0),
+    }));
+  };
+
   const nextStep = () => {
     if (currentStep < 4) setCurrentStep(currentStep + 1);
   };
@@ -270,7 +401,7 @@ const RegistrationForm = () => {
     const submissionData = {
       ...formData,
       paymentProof: paymentProof,
-      paymentAmount: getSelectedRegistrationType()?.price,
+      totalAmount: calculateTotalAmount(),
     };
     console.log('Registration data:', submissionData);
     alert(
@@ -284,6 +415,23 @@ const RegistrationForm = () => {
     );
   };
 
+  const calculateTotalAmount = () => {
+    const basePackage = getSelectedRegistrationType();
+    if (!basePackage) return 0;
+
+    let total = basePackage.price;
+
+    // Add additional packages for corporate overflow
+    formData.additionalPackages.forEach(pkg => {
+      const packageType = registrationTypes.find(type => type.id === pkg.type);
+      if (packageType) {
+        total += packageType.price * pkg.count;
+      }
+    });
+
+    return total;
+  };
+
   const steps = [
     { number: 1, title: 'Personal Info', icon: <User className="h-5 w-5" /> },
     {
@@ -294,6 +442,18 @@ const RegistrationForm = () => {
     { number: 3, title: 'Preferences', icon: <Users className="h-5 w-5" /> },
     { number: 4, title: 'Payment', icon: <CreditCard className="h-5 w-5" /> },
   ];
+
+  const isCorporatePackage = formData.registrationType === 'corporate';
+  const corporateAttendeesValid =
+    !isCorporatePackage ||
+    (formData.corporateAttendees.length >= 2 &&
+      formData.corporateAttendees.every(
+        attendee =>
+          attendee.firstName &&
+          attendee.lastName &&
+          attendee.email &&
+          attendee.jobTitle
+      ));
 
   return (
     <section className="section-padding bg-muted/30">
@@ -364,7 +524,9 @@ const RegistrationForm = () => {
               </CardTitle>
               <CardDescription>
                 {currentStep === 1 &&
-                  'Please provide your personal and professional information'}
+                  (isCorporatePackage
+                    ? 'Please provide the primary contact information for your corporate registration'
+                    : 'Please provide your personal and professional information')}
                 {currentStep === 2 &&
                   'Choose your registration type and accommodation preferences'}
                 {currentStep === 3 &&
@@ -382,6 +544,19 @@ const RegistrationForm = () => {
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
+                  {isCorporatePackage && (
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                      <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                        Corporate Package - Primary Contact
+                      </h3>
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        This information will be used as the primary contact for
+                        your corporate registration. You'll be able to add up to
+                        5 team members in the next step.
+                      </p>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="firstName">First Name *</Label>
@@ -518,9 +693,14 @@ const RegistrationForm = () => {
                     </Label>
                     <RadioGroup
                       value={formData.registrationType}
-                      onValueChange={value =>
-                        handleInputChange('registrationType', value)
-                      }
+                      onValueChange={value => {
+                        handleInputChange('registrationType', value);
+                        // Reset corporate attendees if switching away from corporate
+                        if (value !== 'corporate') {
+                          handleInputChange('corporateAttendees', []);
+                          handleInputChange('additionalPackages', []);
+                        }
+                      }}
                       className="space-y-4"
                     >
                       {registrationTypes.map(type => (
@@ -548,6 +728,11 @@ const RegistrationForm = () => {
                                         Most Popular
                                       </Badge>
                                     )}
+                                    {type.corporate && (
+                                      <Badge className="bg-blue-600 text-white">
+                                        Corporate
+                                      </Badge>
+                                    )}
                                   </div>
                                   <div className="text-right">
                                     {type.originalPrice && (
@@ -558,6 +743,11 @@ const RegistrationForm = () => {
                                     <span className="text-2xl font-bold text-primary">
                                       ${type.price}
                                     </span>
+                                    {type.corporate && (
+                                      <span className="text-sm text-muted-foreground block">
+                                        for up to 5 people
+                                      </span>
+                                    )}
                                   </div>
                                 </div>
                                 <p className="text-muted-foreground mb-3">
@@ -591,6 +781,258 @@ const RegistrationForm = () => {
                       ))}
                     </RadioGroup>
                   </div>
+
+                  {/* Corporate Attendee Management */}
+                  {isCorporatePackage && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6"
+                    >
+                      <Separator />
+
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <Label className="text-lg font-semibold">
+                            Corporate Team Members (
+                            {formData.corporateAttendees.length}/5)
+                          </Label>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={addCorporateAttendee}
+                            disabled={formData.corporateAttendees.length >= 5}
+                            className="flex items-center gap-2"
+                          >
+                            <Plus className="h-4 w-4" />
+                            Add Member
+                          </Button>
+                        </div>
+
+                        {formData.corporateAttendees.length < 2 && (
+                          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg mb-4">
+                            <div className="flex items-center gap-2">
+                              <AlertCircle className="h-5 w-5 text-yellow-600" />
+                              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                                Corporate packages require a minimum of 2
+                                attendees (including yourself).
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="space-y-4">
+                          {formData.corporateAttendees.map(
+                            (attendee, index) => (
+                              <div
+                                key={attendee.id}
+                                className="border rounded-lg p-4"
+                              >
+                                <div className="flex items-center justify-between mb-4">
+                                  <h4 className="font-medium">
+                                    Attendee {index + 1}
+                                  </h4>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      removeCorporateAttendee(attendee.id)
+                                    }
+                                    className="text-red-600 hover:text-red-800"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                  <div>
+                                    <Label htmlFor={`firstName-${attendee.id}`}>
+                                      First Name *
+                                    </Label>
+                                    <Input
+                                      id={`firstName-${attendee.id}`}
+                                      value={attendee.firstName}
+                                      onChange={e =>
+                                        updateCorporateAttendee(
+                                          attendee.id,
+                                          'firstName',
+                                          e.target.value
+                                        )
+                                      }
+                                      required
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`lastName-${attendee.id}`}>
+                                      Last Name *
+                                    </Label>
+                                    <Input
+                                      id={`lastName-${attendee.id}`}
+                                      value={attendee.lastName}
+                                      onChange={e =>
+                                        updateCorporateAttendee(
+                                          attendee.id,
+                                          'lastName',
+                                          e.target.value
+                                        )
+                                      }
+                                      required
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                  <div>
+                                    <Label htmlFor={`email-${attendee.id}`}>
+                                      Email Address *
+                                    </Label>
+                                    <Input
+                                      id={`email-${attendee.id}`}
+                                      type="email"
+                                      value={attendee.email}
+                                      onChange={e =>
+                                        updateCorporateAttendee(
+                                          attendee.id,
+                                          'email',
+                                          e.target.value
+                                        )
+                                      }
+                                      required
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label htmlFor={`jobTitle-${attendee.id}`}>
+                                      Job Title *
+                                    </Label>
+                                    <Input
+                                      id={`jobTitle-${attendee.id}`}
+                                      value={attendee.jobTitle}
+                                      onChange={e =>
+                                        updateCorporateAttendee(
+                                          attendee.id,
+                                          'jobTitle',
+                                          e.target.value
+                                        )
+                                      }
+                                      required
+                                    />
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <Label className="text-sm font-medium mb-2 block">
+                                    Dietary Requirements
+                                  </Label>
+                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                    {dietaryOptions.map(option => (
+                                      <div
+                                        key={option}
+                                        className="flex items-center space-x-2"
+                                      >
+                                        <Checkbox
+                                          id={`${option}-${attendee.id}`}
+                                          checked={attendee.dietaryRequirements.includes(
+                                            option
+                                          )}
+                                          onCheckedChange={checked =>
+                                            updateAttendeeDietary(
+                                              attendee.id,
+                                              option,
+                                              checked as boolean
+                                            )
+                                          }
+                                        />
+                                        <Label
+                                          htmlFor={`${option}-${attendee.id}`}
+                                          className="text-xs"
+                                        >
+                                          {option}
+                                        </Label>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+
+                        {formData.corporateAttendees.length === 5 && (
+                          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                              Need More Attendees?
+                            </h4>
+                            <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+                              Your corporate package includes 5 attendees. For
+                              additional team members, you can add individual
+                              packages below:
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  addAdditionalPackage('early-bird')
+                                }
+                                className="flex items-center gap-2"
+                              >
+                                <Plus className="h-4 w-4" />
+                                Add Early Bird ($300)
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => addAdditionalPackage('standard')}
+                                className="flex items-center gap-2"
+                              >
+                                <Plus className="h-4 w-4" />
+                                Add Standard ($350)
+                              </Button>
+                            </div>
+
+                            {formData.additionalPackages.length > 0 && (
+                              <div className="mt-4 space-y-2">
+                                <h5 className="font-medium text-blue-900 dark:text-blue-100">
+                                  Additional Packages:
+                                </h5>
+                                {formData.additionalPackages.map(pkg => {
+                                  const packageType = registrationTypes.find(
+                                    type => type.id === pkg.type
+                                  );
+                                  return (
+                                    <div
+                                      key={pkg.type}
+                                      className="flex items-center justify-between bg-white dark:bg-gray-800 p-2 rounded"
+                                    >
+                                      <span className="text-sm">
+                                        {packageType?.name} x{pkg.count} = $
+                                        {(packageType?.price ?? 0) * pkg.count}
+                                      </span>
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() =>
+                                          removeAdditionalPackage(pkg.type)
+                                        }
+                                        className="text-red-600 hover:text-red-800"
+                                      >
+                                        <Trash2 className="h-4 w-4" />
+                                      </Button>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
 
                   <Separator />
 
@@ -729,36 +1171,50 @@ const RegistrationForm = () => {
 
                   <Separator />
 
-                  <div>
-                    <Label className="text-lg font-semibold mb-4 block">
-                      Dietary Requirements
-                    </Label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                      {dietaryOptions.map(option => (
-                        <div
-                          key={option}
-                          className="flex items-center space-x-2"
-                        >
-                          <Checkbox
-                            id={option}
-                            checked={formData.dietaryRequirements.includes(
-                              option
-                            )}
-                            onCheckedChange={checked =>
-                              handleArrayChange(
-                                'dietaryRequirements',
-                                option,
-                                checked as boolean
-                              )
-                            }
-                          />
-                          <Label htmlFor={option} className="text-sm">
-                            {option}
-                          </Label>
-                        </div>
-                      ))}
+                  {/* Dietary Requirements for individual packages */}
+                  {!isCorporatePackage && (
+                    <div>
+                      <Label className="text-lg font-semibold mb-4 block">
+                        Dietary Requirements
+                      </Label>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                        {dietaryOptions.map(option => (
+                          <div
+                            key={option}
+                            className="flex items-center space-x-2"
+                          >
+                            <Checkbox
+                              id={option}
+                              checked={formData.dietaryRequirements.includes(
+                                option
+                              )}
+                              onCheckedChange={checked =>
+                                handleArrayChange(
+                                  'dietaryRequirements',
+                                  option,
+                                  checked as boolean
+                                )
+                              }
+                            />
+                            <Label htmlFor={option} className="text-sm">
+                              {option}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {isCorporatePackage && (
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Note:</strong> Dietary requirements for your
+                        team members have been collected in the previous step.
+                        The preferences below apply to your corporate group's
+                        networking interests.
+                      </p>
+                    </div>
+                  )}
 
                   <div>
                     <Label htmlFor="specialRequests">
@@ -792,7 +1248,7 @@ const RegistrationForm = () => {
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span>Name:</span>
+                        <span>Primary Contact:</span>
                         <span className="font-medium">
                           {formData.firstName} {formData.lastName}
                         </span>
@@ -811,11 +1267,66 @@ const RegistrationForm = () => {
                           {getSelectedRegistrationType()?.name}
                         </span>
                       </div>
+
+                      {isCorporatePackage && (
+                        <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded">
+                          <h4 className="font-medium mb-2">
+                            Corporate Team Members:
+                          </h4>
+                          <div className="space-y-1 text-sm">
+                            <div>
+                              Primary Contact: {formData.firstName}{' '}
+                              {formData.lastName}
+                            </div>
+                            {formData.corporateAttendees.map(
+                              (attendee, index) => (
+                                <div key={attendee.id}>
+                                  Member {index + 1}: {attendee.firstName}{' '}
+                                  {attendee.lastName}
+                                </div>
+                              )
+                            )}
+                          </div>
+                          <div className="mt-2 text-sm font-medium">
+                            Total Corporate Attendees:{' '}
+                            {formData.corporateAttendees.length + 1}/5
+                          </div>
+                        </div>
+                      )}
+
+                      <Separator />
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span>{getSelectedRegistrationType()?.name}:</span>
+                          <span>${getSelectedRegistrationType()?.price}</span>
+                        </div>
+
+                        {formData.additionalPackages.map(pkg => {
+                          const packageType = registrationTypes.find(
+                            type => type.id === pkg.type
+                          );
+                          return (
+                            <div
+                              key={pkg.type}
+                              className="flex justify-between"
+                            >
+                              <span>
+                                {packageType?.name} x{pkg.count}:
+                              </span>
+                              <span>
+                                ${(packageType?.price ?? 0) * pkg.count}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+
                       <Separator />
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total Amount:</span>
                         <span className="text-primary">
-                          ${getSelectedRegistrationType()?.price}
+                          ${calculateTotalAmount()}
                         </span>
                       </div>
                     </div>
@@ -911,7 +1422,7 @@ const RegistrationForm = () => {
                               <div className="flex justify-between">
                                 <span className="font-medium">Amount:</span>
                                 <span className="font-mono text-lg text-primary">
-                                  ${getSelectedRegistrationType()?.price} USD
+                                  ${calculateTotalAmount()} USD
                                 </span>
                               </div>
                             </div>
@@ -957,12 +1468,9 @@ const RegistrationForm = () => {
                                 <span className="font-mono text-lg text-primary">
                                   KES{' '}
                                   {(
-                                    (getSelectedRegistrationType()?.price ??
-                                      0) * 130
+                                    calculateTotalAmount() * 130
                                   ).toLocaleString()}{' '}
-                                  (≈ $
-                                  {getSelectedRegistrationType()?.price ?? 0}{' '}
-                                  USD)
+                                  (≈ ${calculateTotalAmount()} USD)
                                 </span>
                               </div>
                             </div>
@@ -1074,7 +1582,9 @@ const RegistrationForm = () => {
                           !formData.company ||
                           !formData.industry ||
                           !formData.country)) ||
-                      (currentStep === 2 && !formData.registrationType) ||
+                      (currentStep === 2 &&
+                        (!formData.registrationType ||
+                          !corporateAttendeesValid)) ||
                       (currentStep === 3 && false) // No required fields in step 3
                     }
                   >
